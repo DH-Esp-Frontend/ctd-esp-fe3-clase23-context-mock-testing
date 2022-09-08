@@ -16,6 +16,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
+      "dh/mui/*": ["mui/*"],
       "dh/components/*": ["components/*"],
       "dh/pages/*": ["pages/*"],
       "dh/styles/*": ["styles/*"]

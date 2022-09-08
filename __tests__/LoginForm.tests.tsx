@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import LoginForm from 'dh/components/LoginForm'
+import LoginForm, { FormData, loginSchema } from 'dh/components/LoginForm'
 
 describe('LoginForm', () => {
     describe('when rendering default form', () => {
@@ -13,14 +13,10 @@ describe('LoginForm', () => {
         })
         it('should render the label & input fields', () => {
             render(<LoginForm />)
-            const usernameLabel = screen.getByLabelText('Username:')
-            const usernameInput = screen.getByRole('textbox', {name: /Username/i,})
-            const passwordLabel = screen.getByLabelText('Password:')
-            const passwordInput = screen.getByRole('textbox', {name: /Password/i,})
+            const usernameInput = screen.getByLabelText('Username:')
+            const passwordInput = screen.getByLabelText('Password:')
             expect(usernameInput).toBeInTheDocument();
-            expect(usernameLabel).toBeInTheDocument();
             expect(passwordInput).toBeInTheDocument();
-            expect(passwordLabel).toBeInTheDocument();
         });
         it('should render the submit button', () => {
             render(<LoginForm />)
@@ -37,7 +33,7 @@ describe('LoginForm', () => {
         it('should show success message', async () => {
             render(<LoginForm />)
             const usernameInput = screen.getByRole('textbox', {name: /Username/i,})
-            const passwordInput = screen.getByRole('textbox', {name: /Password/i,})
+            const passwordInput = screen.getByLabelText('Password:')
             const submitButton = screen.getByRole('button', {name: /Login/i,})
             await userEvent.type(usernameInput, 'valid-username');
             await userEvent.type(passwordInput, 'valid-password');
@@ -50,11 +46,11 @@ describe('LoginForm', () => {
         describe('without username', () => {
             it('should show username is required', async () => {
                 render(<LoginForm />)
-                const passwordInput = screen.getByRole('textbox', {name: /Password/i,})
+                const passwordInput = screen.getByLabelText('Password:')
                 const submitButton = screen.getByRole('button', {name: /Login/i,})
                 await userEvent.type(passwordInput, 'valid-password');
                 await userEvent.click(submitButton);
-                const error = await screen.getByText('Username is required');
+                const error = await screen.findByText('Username is required');
                 expect(error).toBeInTheDocument();
             })
         })
@@ -65,7 +61,7 @@ describe('LoginForm', () => {
                 const submitButton = screen.getByRole('button', {name: /Login/i,})
                 await userEvent.type(usernameInput, 'valid-username');
                 await userEvent.click(submitButton);
-                const error = await screen.getByText('Password is required');
+                const error = await screen.findByText('Password is required');
                 expect(error).toBeInTheDocument();
             })
         })
@@ -73,14 +69,32 @@ describe('LoginForm', () => {
             it('should show username shout have at least 3 chars', async () => {
                 render(<LoginForm />)
                 const usernameInput = screen.getByRole('textbox', {name: /Username/i,})
-                const passwordInput = screen.getByRole('textbox', {name: /Password/i,})
+                const passwordInput = screen.getByLabelText('Password:')
                 const submitButton = screen.getByRole('button', {name: /Login/i,})
                 await userEvent.type(usernameInput, 'x');
                 await userEvent.type(passwordInput, 'valid-password');
                 await userEvent.click(submitButton);
-                const error = await screen.getByText('Username should have at least 3 chars');
+                const error = await screen.findByText('Username should have at least 3 chars');
                 expect(error).toBeInTheDocument();
             })
+        })
+    })
+    describe('when validating a complete login schema', () => {
+        it('should return true', async () => {
+            const user: FormData = {
+                username: 'valid',
+                password: 'valid'
+            }
+            expect(await loginSchema.isValid(user)).toBeTruthy();
+        })
+    })
+    describe('when validating a schema without username', () => {
+        it('should return false', async () => {
+            const user: FormData = {
+                username: '',
+                password: 'valid'
+            }
+            expect(await loginSchema.validate(user)).toBeFalsy();
         })
     })
 })
