@@ -1,4 +1,5 @@
-import LoginForm from 'dh/components/LoginForm'
+import LayoutRed from 'dh/components/layouts/LayoutRed'
+import LoginForm from 'dh/components/StepperForm'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
