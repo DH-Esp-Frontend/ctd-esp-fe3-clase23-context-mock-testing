@@ -1,5 +1,8 @@
 import LayoutBlue from "dh/components/layouts/LayoutBlue";
+import StepperForm from "dh/components/StepperForm";
 import { GetStaticProps, GetStaticPropsResult, NextPage } from "next";
+import Router from "next/router";
+import { useEffect } from "react";
 import styles from '../styles/Home.module.css'
 
 export type DetailStaticPropsResult = {
@@ -17,13 +20,30 @@ export const getStaticProps:GetStaticProps =
 }
 
 const DetailPage: NextPage = () => {
+
+    // const {selectedProduct} = useCart() // context - tu propio hook, state, localStorage 
+    // const router = useRouter();
+
+    // useEffect(() => {
+    //     if (!selectedProduct){
+    //         router.push("/")
+    //     }
+    // }, [selectedProduct])
+
+    // if (!selectedProduct){
+    //     return <></>
+    // }
+
     return (<div>
         <main className={styles.main}>
-            Detalle
+            <div>
+                {/* Datos del producto: {selectedProduct.title} */}
+            </div>
+            <StepperForm />
         </main>
     </div>)
 }
 
-(DetailPage as any).Layout = LayoutBlue;
+// (DetailPage as any).Layout = LayoutBlue;
 
 export default DetailPage;

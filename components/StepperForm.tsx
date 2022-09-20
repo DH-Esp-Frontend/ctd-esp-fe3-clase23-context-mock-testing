@@ -2,6 +2,9 @@ import {Box, Step, StepLabel, Stepper} from "@mui/material";
 import {FC, useState} from "react";
 import {RegisterFormData} from "dh/components/forms";
 import RegisterForm from "dh/components/forms/RegisterForm";
+import CardInput from "./card-input/CardInput";
+import CreditCardForm from "./forms/CreditCardForm";
+import { CreditCardFormData } from "./forms/CreditCardForm.types";
 
 export type FormData = {
     username: string,
@@ -19,6 +22,14 @@ const StepperForm: FC = (props) => {
             customer: data
         })
         setActiveStep(1);
+    }
+
+    const handleSubmitCreditCardForm = (data: CreditCardFormData) => {
+        setOrder({
+            ...order,
+            card: data
+        })
+        setActiveStep(2);
     }
 
     return <>
@@ -40,9 +51,11 @@ const StepperForm: FC = (props) => {
                 <RegisterForm activeStep={activeStep} handleNext={handleSubmitRegisterForm}/>
             }
             {activeStep === 1 &&
-                <div>Finalizado</div>
+                <CreditCardForm activeStep={activeStep} handleNext={handleSubmitCreditCardForm}/>
             }
-
+             {activeStep === 2 &&
+                <div>Finalizado</div>
+             }
 
         </Box>
     </>

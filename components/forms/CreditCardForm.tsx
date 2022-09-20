@@ -6,51 +6,54 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import StepperNavigation from "../StepperNavigation";
 import { RegisterFormData, registerFormSchema } from "./RegisterForm.types";
+import { CreditCardFormData } from "./CreditCardForm.types";
+import CardInput from "../card-input/CardInput";
+import ControlledCardInput from "../card-input/ControlledCardInput";
 
 
 
-export type RegisterFormProps = {
+export type CreditCardFormProps = {
     activeStep: number,
-    handleNext: (data: RegisterFormData) => void;
+    handleNext: (data: CreditCardFormData) => void;
 }
 
-const RegisterForm:FC<RegisterFormProps> = ({activeStep, handleNext}: RegisterFormProps) => {
+const CreditCardForm:FC<CreditCardFormProps> = ({activeStep, handleNext}: CreditCardFormProps) => {
 
-    const methods = useForm<RegisterFormData>({
-        resolver: yupResolver(registerFormSchema),
+    const methods = useForm<CreditCardFormData>({
+        // resolver: yupResolver(registerFormSchema),
         defaultValues: {
-            firstname: "Test",
-            lastname: "User",
-            email: "test@user.com",
+            card: {cardNumber: '', expDate: ''},
         }
     });  
-    const {watch, setFocus, handleSubmit} = methods;
-    const email = watch("email")
-    const firstname = watch("firstname")
-    const lastname = watch("lastname")
+    const {setFocus, handleSubmit, watch} = methods;
+    const card = watch("card")
 
-    const onSubmit = (data: RegisterFormData) => {
+    const onSubmit = (data: CreditCardFormData) => {
         console.log(JSON.stringify(data));
         handleNext(data);
     }
     
     useEffect(() => {
-        setFocus("email")
+        // setFocus("email")
     },[]);
 
     return  <Stack>
     <h4>Paso 1</h4>
     <form onSubmit={handleSubmit(onSubmit)}>
         <FormProvider {...methods}>
-            <ControlledTextInput name="email" label="Email" />
-            <ControlledTextInput name="firstname" label="First Name" />
-            <ControlledTextInput name="lastname" label="Last Name" />
+
+            
+
+            <ControlledCardInput />
+
 
             <div>
-                Email: {email}
-                Firstname: {firstname}
-                Lastname: {lastname}
+                Card number ingresado: {card.cardNumber}
             </div>
+            <div>
+                Fecha exp ingresada: {card.expDate}
+            </div>
+
         </FormProvider>
     </form>
     <StepperNavigation activeStep={activeStep} 
@@ -60,4 +63,4 @@ const RegisterForm:FC<RegisterFormProps> = ({activeStep, handleNext}: RegisterFo
 </Stack>
 }
 
-export default RegisterForm;
+export default CreditCardForm;
