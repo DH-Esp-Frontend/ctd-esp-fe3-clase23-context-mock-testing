@@ -1,7 +1,7 @@
 import { Box, Button, Stack } from "@mui/material";
 import { FC } from "react";
 
-type StepperNavigationProps = {
+export type StepperNavigationProps = {
     activeStep: number,
     onPrevClick: () => void,
     onNextClick: () => void,

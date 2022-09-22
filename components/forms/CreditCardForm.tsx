@@ -1,23 +1,24 @@
 import { Stack } from "@mui/material";
-import { FC, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import ControlledTextInput from "../ControlledTextInput";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import StepperNavigation from "../StepperNavigation";
-import { RegisterFormData, registerFormSchema } from "./RegisterForm.types";
+import StepperNavigation from "dh/components/StepperNavigation";
 import { CreditCardFormData } from "./CreditCardForm.types";
-import CardInput from "../card-input/CardInput";
 import ControlledCardInput from "../card-input/ControlledCardInput";
+import useOrder from "dh/components/useOrder";
 
 
 
 export type CreditCardFormProps = {
     activeStep: number,
-    handleNext: (data: CreditCardFormData) => void;
+    handleNext: () => void;
 }
 
 const CreditCardForm:FC<CreditCardFormProps> = ({activeStep, handleNext}: CreditCardFormProps) => {
+
+    const {dispatch} = useOrder();
+    // const context = useContext(OrderContext);
+    // if (!context) return <></>
+    // const {dispatch} = context
 
     const methods = useForm<CreditCardFormData>({
         // resolver: yupResolver(registerFormSchema),
@@ -29,8 +30,11 @@ const CreditCardForm:FC<CreditCardFormProps> = ({activeStep, handleNext}: Credit
     const card = watch("card")
 
     const onSubmit = (data: CreditCardFormData) => {
-        console.log(JSON.stringify(data));
-        handleNext(data);
+        dispatch({
+            type: "SET_CARD",
+            payload: data.card
+        })
+        handleNext();
     }
     
     useEffect(() => {

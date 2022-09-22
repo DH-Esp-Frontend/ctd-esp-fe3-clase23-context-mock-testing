@@ -1,4 +1,5 @@
 import LayoutBlue from "dh/components/layouts/LayoutBlue";
+import { OrderProvider } from "dh/components/OrderContext";
 import StepperForm from "dh/components/StepperForm";
 import { GetStaticProps, GetStaticPropsResult, NextPage } from "next";
 import Router from "next/router";
@@ -39,7 +40,9 @@ const DetailPage: NextPage = () => {
             <div>
                 {/* Datos del producto: {selectedProduct.title} */}
             </div>
-            <StepperForm />
+            <OrderProvider>
+                <StepperForm />
+            </OrderProvider>
         </main>
     </div>)
 }

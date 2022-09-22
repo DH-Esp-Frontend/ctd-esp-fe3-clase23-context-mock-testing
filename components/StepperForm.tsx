@@ -14,21 +14,11 @@ export type FormData = {
 const StepperForm: FC = (props) => {
     const [activeStep, setActiveStep] = useState<number>(0);
 
-    const [order, setOrder] = useState({});
-
-    const handleSubmitRegisterForm = (data: RegisterFormData) => {
-        setOrder({
-            ...order,
-            customer: data
-        })
+    const handleSubmitRegisterForm = () => {
         setActiveStep(1);
     }
 
-    const handleSubmitCreditCardForm = (data: CreditCardFormData) => {
-        setOrder({
-            ...order,
-            card: data
-        })
+    const handleSubmitCreditCardForm = () => {
         setActiveStep(2);
     }
 

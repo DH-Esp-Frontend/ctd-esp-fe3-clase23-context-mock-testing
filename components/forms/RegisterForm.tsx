@@ -6,15 +6,18 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import StepperNavigation from "../StepperNavigation";
 import { RegisterFormData, registerFormSchema } from "./RegisterForm.types";
+import { useOrder } from "../OrderContext";
 
 
 
 export type RegisterFormProps = {
     activeStep: number,
-    handleNext: (data: RegisterFormData) => void;
+    handleNext: () => void;
 }
 
 const RegisterForm:FC<RegisterFormProps> = ({activeStep, handleNext}: RegisterFormProps) => {
+
+    const {dispatch} = useOrder();
 
     const methods = useForm<RegisterFormData>({
         resolver: yupResolver(registerFormSchema),
@@ -30,8 +33,11 @@ const RegisterForm:FC<RegisterFormProps> = ({activeStep, handleNext}: RegisterFo
     const lastname = watch("lastname")
 
     const onSubmit = (data: RegisterFormData) => {
-        console.log(JSON.stringify(data));
-        handleNext(data);
+        dispatch({
+            type: "SET_CUSTOMER",
+            payload: data
+        })
+        handleNext();
     }
     
     useEffect(() => {

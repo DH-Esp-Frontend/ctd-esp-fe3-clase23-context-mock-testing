@@ -17,6 +17,7 @@ const CardInput:FC<CardInputProps> = (
     return <>
         <Stack>
             <TextField 
+                    name="cardNumber"
                     onChange={(event) => {
                         onChange({
                             ...value,
@@ -28,6 +29,7 @@ const CardInput:FC<CardInputProps> = (
                     fullWidth 
             />
             <TextField 
+                name="expDate"
                 onChange={(event) => {
                     onChange({
                         ...value,
